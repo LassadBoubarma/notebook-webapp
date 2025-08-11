@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+/* Import des styles globaux */
+@import './styles/globals.css';
+
+/* Import des styles spécifiques */
+@import './styles/auth.css';
+@import './styles/dashboard.css';
+@import './styles/components.css';

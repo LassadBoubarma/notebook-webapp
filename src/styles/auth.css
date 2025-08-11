@@ -1,0 +1,125 @@
+/* Styles pour les pages d'authentification - Thème Pixels & Gaming Cute */
+
+.auth-container {
+  @apply min-h-screen flex items-center justify-center p-4;
+  background: linear-gradient(135deg, #2d1b69 0%, #11998e 50%, #38ef7d 100%);
+  background-attachment: fixed;
+}
+
+.auth-form {
+  @apply bg-black/20 backdrop-blur-sm rounded-none shadow-2xl border-4 border-green-400 p-12 w-full max-w-md;
+  animation: fadeIn 0.8s ease-out;
+  box-shadow: 
+    0 0 0 4px rgba(0, 255, 136, 0.3),
+    0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.auth-form-login {
+  @apply bg-black/20 backdrop-blur-sm rounded-none shadow-2xl border-4 border-green-400 p-12 w-full max-w-md;
+  animation: fadeIn 0.8s ease-out;
+  box-shadow: 
+    0 0 0 4px rgba(0, 255, 136, 0.3),
+    0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.auth-title {
+  @apply text-2xl font-bold text-center mb-8 text-green-400;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+.auth-title-login {
+  @apply text-2xl font-bold text-center mb-8 text-green-400;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+.auth-input-group {
+  @apply mb-6;
+}
+
+.auth-label {
+  @apply block mb-2 text-sm font-bold text-green-400;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.8);
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+.auth-input {
+  @apply w-full p-4 border-4 border-green-400 rounded-none focus:outline-none bg-black/30 backdrop-blur-sm text-green-400 text-sm;
+  box-shadow: 
+    inset 0 0 0 2px rgba(0, 255, 136, 0.3),
+    0 0 0 2px rgba(0, 255, 136, 0.3);
+  font-family: 'Courier New', monospace;
+}
+
+.auth-input:focus {
+  box-shadow: 
+    inset 0 0 0 2px rgba(0, 255, 136, 0.5),
+    0 0 0 4px rgba(0, 255, 136, 0.5),
+    0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.auth-button {
+  @apply w-full text-black p-4 rounded-none transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:scale-105 text-base mt-4;
+  background: linear-gradient(135deg, #00ff88 0%, #11998e 100%);
+  border: 4px solid #00ff88;
+  box-shadow: 
+    0 0 0 2px rgba(0, 255, 136, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+.auth-button:hover {
+  background: linear-gradient(135deg, #38ef7d 0%, #00ff88 100%);
+  box-shadow: 
+    0 0 0 4px rgba(0, 255, 136, 0.5),
+    0 8px 16px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.auth-error-message {
+  @apply text-red-400 text-sm mt-2 font-bold text-center;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.8);
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+.auth-resend-button {
+  @apply bg-transparent border-none text-cyan-400 text-sm cursor-pointer underline mt-2;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+.auth-resend-button:hover {
+  @apply text-cyan-300;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+.auth-footer {
+  @apply text-center mt-8 text-green-300 text-sm;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+.auth-link {
+  @apply text-cyan-400 font-bold no-underline;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.8);
+}
+
+.auth-link:hover {
+  @apply text-cyan-300 underline;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+/* Effets de particules gaming */
+.auth-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(17, 153, 142, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(45, 27, 105, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+} 

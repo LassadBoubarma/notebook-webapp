@@ -1,0 +1,149 @@
+/* ===========================
+   BasicNote — Yellow/Black Pixel Style
+   Works with BOTH class sets:
+   - bn / bn-bar / bn-btn / bn-select / bn-title / bn-wrap / bn-textarea / bn-meta / bn-saving
+   - bn-simple / bn-head / bn-chip / bn-pane / bn-foot / lang-tag
+   =========================== */
+
+/* --- Palette --- */
+:root{
+  --bg:#0a0b0c;
+  --panel:#0e1013;
+  --ink:#fff7d6;
+  --muted:#d8c78f;
+  --ylw:#ffd54a;
+  --ylw-2:#e9c037;
+  --line:#2a1f08;
+}
+
+/* Page containers */
+.bn, .bn-simple{
+  min-height:100vh;
+  background:
+    radial-gradient(900px 480px at 65% -10%, #141a26 0%, transparent 60%),
+    var(--bg);
+  color:var(--ink);
+  padding:10px 14px 24px;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+/* Top bar */
+.bn-bar, .bn-head{
+  position: sticky; top: 0; z-index: 10;
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 12px;
+  background:linear-gradient(180deg, rgba(10,10,12,.92), rgba(10,10,12,.88));
+  border-bottom:1px solid var(--line);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #0007, inset 0 -2px 0 #000;
+}
+
+/* Title */
+.bn-title{
+  color:var(--ylw);
+  letter-spacing:.4px;
+  text-shadow:0 1px 0 #000;
+  font-weight:800;
+  font-size:1.05rem;
+}
+
+/* Buttons / Chips */
+.bn-btn, .bn-chip{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 12px;
+  border:1px solid var(--line);
+  background:#13161a;
+  color:var(--ink);
+  border-radius:14px;
+  text-decoration:none;
+  box-shadow:
+    inset 0 0 0 2px #1b1406,
+    0 2px 0 #000;
+  cursor:pointer;
+  transition: transform .06s ease, box-shadow .12s ease, border-color .2s ease;
+}
+.bn-btn:hover, .bn-chip:hover{ transform: translateY(-1px); border-color:#4a380e; }
+.bn-btn:active, .bn-chip:active{ transform: translateY(0); }
+
+.bn-btn-primary{
+  background: var(--ylw);
+  color:#1b1403;
+  border-color: var(--ylw-2);
+  box-shadow: inset 0 -2px 0 #b99219, 0 2px 0 #000;
+}
+.bn-btn-primary:hover{ filter: brightness(1.02); }
+
+.bn-btn-ghost{
+  background:#0f1215;
+  color:var(--ink);
+}
+
+.bn-btn-danger{
+  background:#3a1212;
+  color:#ffdede;
+  border-color:#5a1a1a;
+}
+
+/* Selects */
+.bn-select{
+  appearance:none;
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#14171c url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='8'><path d='M1 2 L5 6 L9 2' fill='none' stroke='%23ffd54a' stroke-width='2'/></svg>") no-repeat right 10px center / 10px 8px;
+  color:var(--ink);
+  box-shadow: inset 0 0 0 2px #1b1406;
+}
+.bn-select:focus{ outline:none; border-color:#4a380e; box-shadow:0 0 0 2px var(--ylw-2) inset; }
+
+/* Right-side status */
+.bn-saving, .bn-status{
+  font-size:.85rem;
+  color:var(--muted);
+}
+
+/* Main panel */
+.bn-wrap, .bn-pane{
+  max-width:1100px;
+  margin:16px auto 0;
+  padding:0 6px;
+}
+
+/* Textarea */
+.bn-textarea{
+  width:100%;
+  min-height:72vh;
+  padding:18px 20px;
+  color:var(--ink);
+  background:var(--panel);
+  border-radius:16px;
+  border:1px solid var(--line);
+  box-shadow:
+    inset 0 0 0 2px #1f1a08,
+    0 12px 40px #0009;
+  font: 15px/1.55 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  resize: vertical;
+}
+.bn-textarea::placeholder{ color: #dacb8f8c; }
+.bn-textarea:focus{ outline:none; border-color:#4a380e; box-shadow:0 0 0 2px var(--ylw-2) inset, 0 12px 40px #0009; }
+
+/* Footer meta */
+.bn-meta, .bn-foot{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:10px;
+  color:var(--muted);
+  font-size:.9rem;
+}
+.lang-tag{
+  padding:4px 10px; border-radius:10px; border:1px solid var(--line);
+  background:#14171c; color:var(--ylw);
+}
+
+/* Small helpers if you use these containers */
+.left,.right{ display:flex; align-items:center; gap:8px; }
+
+/* Scrollbar (dark) */
+.bn-textarea::-webkit-scrollbar{ width:10px; }
+.bn-textarea::-webkit-scrollbar-thumb{ background:#4a3a16; border-radius:6px; }
+.bn-textarea::-webkit-scrollbar-thumb:hover{ background:#6a531b; }

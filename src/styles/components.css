@@ -1,0 +1,344 @@
+/* Styles pour les composants réutilisables - Thème Cute Aesthetic */
+
+/* Sélecteur de langue */
+.language-selector-wrapper {
+  @apply relative inline-block;
+}
+
+.language-selector {
+  @apply appearance-none bg-white/80 backdrop-blur-sm border-2 border-pink-200 rounded-2xl px-4 py-3 pr-10 text-sm focus:outline-none focus:ring-4 focus:ring-pink-200 focus:border-purple-300 transition-all duration-300;
+}
+
+.language-selector-arrow {
+  @apply pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700;
+}
+
+.language-option {
+  @apply flex items-center gap-3;
+}
+
+/* Boutons */
+.btn {
+  @apply px-6 py-3 rounded-full font-semibold transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-offset-2 transform hover:scale-105;
+}
+
+.btn-primary {
+  @apply text-white shadow-lg hover:shadow-xl focus:ring-pink-200;
+  background: linear-gradient(135deg, #f472b6 0%, #a855f7 100%);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #ec4899 0%, #9333ea 100%);
+}
+
+.btn-secondary {
+  @apply text-gray-700 shadow-md hover:shadow-lg focus:ring-gray-200;
+  background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+}
+
+.btn-danger {
+  @apply text-white shadow-lg hover:shadow-xl focus:ring-red-200;
+  background: linear-gradient(135deg, #f87171 0%, #ec4899 100%);
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #ef4444 0%, #db2777 100%);
+}
+
+.btn-success {
+  @apply text-white shadow-lg hover:shadow-xl focus:ring-green-200;
+  background: linear-gradient(135deg, #4ade80 0%, #14b8a6 100%);
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #22c55e 0%, #0d9488 100%);
+}
+
+.btn-outline {
+  @apply border-2 border-pink-200 text-gray-700 hover:bg-pink-50 focus:ring-pink-200 bg-white/80 backdrop-blur-sm;
+}
+
+.btn-sm {
+  @apply px-4 py-2 text-sm;
+}
+
+.btn-lg {
+  @apply px-8 py-4 text-lg;
+}
+
+.btn:disabled {
+  @apply opacity-50 cursor-not-allowed transform-none;
+}
+
+/* Cartes */
+.card {
+  @apply bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20;
+}
+
+.card-header {
+  @apply px-8 py-6 border-b-2 border-pink-200/50;
+}
+
+.card-body {
+  @apply px-8 py-6;
+}
+
+.card-footer {
+  @apply px-8 py-6 border-t-2 border-pink-200/50;
+  background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 100%);
+}
+
+.card-hover {
+  @apply hover:shadow-2xl transition-all duration-300 transform hover:scale-105;
+}
+
+/* Formulaires */
+.form-group {
+  @apply mb-6;
+}
+
+.form-label {
+  @apply block text-sm font-semibold text-gray-700 mb-3;
+}
+
+.form-input {
+  @apply w-full px-4 py-3 border-2 border-pink-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-200 focus:border-purple-300 transition-all duration-300 bg-white/80 backdrop-blur-sm;
+}
+
+.form-textarea {
+  @apply w-full px-4 py-3 border-2 border-pink-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-200 focus:border-purple-300 transition-all duration-300 bg-white/80 backdrop-blur-sm;
+  resize: vertical;
+}
+
+.form-select {
+  @apply w-full px-4 py-3 border-2 border-pink-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-200 focus:border-purple-300 transition-all duration-300 bg-white/80 backdrop-blur-sm;
+}
+
+.form-error {
+  @apply text-pink-600 text-sm mt-2 font-medium;
+}
+
+.form-help {
+  @apply text-gray-500 text-sm mt-2;
+}
+
+/* Messages */
+.message {
+  @apply px-6 py-4 rounded-2xl border-2;
+}
+
+.message-success {
+  @apply border-green-200 text-green-800;
+  background: linear-gradient(135deg, #dcfce7 0%, #ccfbf1 100%);
+}
+
+.message-error {
+  @apply border-red-200 text-red-800;
+  background: linear-gradient(135deg, #fee2e2 0%, #fce7f3 100%);
+}
+
+.message-warning {
+  @apply border-yellow-200 text-yellow-800;
+  background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+}
+
+.message-info {
+  @apply border-blue-200 text-blue-800;
+  background: linear-gradient(135deg, #dbeafe 0%, #e9d5ff 100%);
+}
+
+/* Badges */
+.badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+}
+
+.badge-primary {
+  @apply text-pink-800;
+  background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 100%);
+}
+
+.badge-secondary {
+  @apply text-gray-800;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+}
+
+.badge-success {
+  @apply text-green-800;
+  background: linear-gradient(135deg, #dcfce7 0%, #ccfbf1 100%);
+}
+
+.badge-danger {
+  @apply text-red-800;
+  background: linear-gradient(135deg, #fee2e2 0%, #fce7f3 100%);
+}
+
+.badge-warning {
+  @apply text-yellow-800;
+  background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+}
+
+/* Loading */
+.loading-spinner {
+  @apply animate-spin rounded-full border-4 border-pink-200 border-t-purple-500;
+}
+
+.loading-spinner-sm {
+  @apply h-5 w-5;
+}
+
+.loading-spinner-md {
+  @apply h-8 w-8;
+}
+
+.loading-spinner-lg {
+  @apply h-12 w-12;
+}
+
+/* Modales */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50;
+}
+
+.modal-content {
+  @apply bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl max-w-md w-full mx-4 border border-white/20;
+}
+
+.modal-header {
+  @apply px-8 py-6 border-b-2 border-pink-200/50;
+}
+
+.modal-body {
+  @apply px-8 py-6;
+}
+
+.modal-footer {
+  @apply px-8 py-6 border-t-2 border-pink-200/50 flex justify-end space-x-4;
+}
+
+/* Tooltips */
+.tooltip {
+  @apply relative;
+}
+
+.tooltip-content {
+  @apply absolute z-10 px-4 py-2 text-sm text-white rounded-2xl shadow-lg opacity-0 invisible transition-all duration-300;
+  background: linear-gradient(135deg, #f472b6 0%, #a855f7 100%);
+}
+
+.tooltip:hover .tooltip-content {
+  @apply opacity-100 visible;
+}
+
+.tooltip-top .tooltip-content {
+  @apply bottom-full left-1/2 transform -translate-x-1/2 mb-2;
+}
+
+.tooltip-bottom .tooltip-content {
+  @apply top-full left-1/2 transform -translate-x-1/2 mt-2;
+}
+
+.tooltip-left .tooltip-content {
+  @apply right-full top-1/2 transform -translate-y-1/2 mr-2;
+}
+
+.tooltip-right .tooltip-content {
+  @apply left-full top-1/2 transform -translate-y-1/2 ml-2;
+}
+
+/* Animations */
+.animate-fade-in {
+  animation: fadeInCute 0.5s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUpCute 0.5s ease-out;
+}
+
+.animate-slide-down {
+  animation: slideDownCute 0.5s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleInCute 0.5s ease-out;
+}
+
+@keyframes fadeInCute {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpCute {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideDownCute {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes scaleInCute {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive utilities */
+.mobile-only {
+  @apply block md:hidden;
+}
+
+.desktop-only {
+  @apply hidden md:block;
+}
+
+.tablet-only {
+  @apply hidden sm:block lg:hidden;
+}
+
+/* Focus styles */
+.focus-ring {
+  @apply focus:outline-none focus:ring-4 focus:ring-pink-200 focus:ring-offset-2;
+}
+
+/* Transitions */
+.transition-all {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.transition-colors {
+  @apply transition-colors duration-300 ease-in-out;
+}
+
+.transition-transform {
+  @apply transition-transform duration-300 ease-in-out;
+}
+
+.transition-shadow {
+  @apply transition-shadow duration-300 ease-in-out;
+} 

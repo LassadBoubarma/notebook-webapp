@@ -1,0 +1,182 @@
+/* Tailwind v4 reference so @apply works here */
+@import "tailwindcss" reference;
+
+/* ——— GLOBAL PAGE ——— */
+.nb{
+  /* police propre (titres pixel plus bas) */
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  min-height: 100vh;
+  color: #fff7d1;
+
+  /* fond : dégradé + halos + léger motif pixel (points) */
+  background:
+    radial-gradient(900px 400px at 20% -10%, rgba(255,215,0,.08), transparent 60%),
+    radial-gradient(800px 360px at 100% 110%, rgba(255,215,0,.06), transparent 60%),
+    linear-gradient(180deg, #0a0a0a, #121212);
+  position: relative;
+}
+
+/* calque motif pixel doux (points 8px) */
+.nb::before{
+  content:"";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(#ffd84a22 1px, transparent 1.6px);
+  background-size: 8px 8px;
+  mix-blend-mode: screen; opacity:.6;
+}
+
+/* cadre lumineux tout autour (remplit le "vide") */
+.nb::after{
+  content:"";
+  position: fixed; inset: 0; pointer-events:none; z-index:0;
+  box-shadow: inset 0 0 0 2px rgba(234,179,8,.15),
+              inset 0 0 40px rgba(234,179,8,.08);
+}
+
+/* conteneur : centrage et largeur max */
+.nb-wrap{ @apply relative z-[1] max-w-6xl mx-auto px-4 py-4; }
+
+/* ——— HEADER ——— */
+.nb-bar{
+  @apply sticky top-0 z-10 flex items-center justify-between gap-3 px-4 py-3
+         backdrop-blur bg-black/70 border-b border-yellow-700/40;
+  box-shadow: 0 8px 28px rgba(0,0,0,.45);
+}
+.nb-logo{ @apply text-yellow-400 text-lg; }
+.nb-title{
+  font-family: 'Press Start 2P', ui-monospace, monospace;
+  @apply text-[13px] leading-none text-yellow-300 tracking-wide;
+}
+
+/* ——— CARDS & ITEMS ——— */
+/* carte avec coins “pixel” (petits carrés) */
+.nb-card{
+  @apply relative bg-neutral-950/85 border border-yellow-800/50 rounded-2xl p-4
+         shadow-[0_18px_40px_rgba(0,0,0,.55)];
+}
+.nb-card::before,
+.nb-card::after{
+  content:"";
+  position:absolute; pointer-events:none;
+  width:8px;height:8px; background: #facc15; /* yellow-400 */
+  box-shadow:
+    calc(100% - 8px) 0 0 #facc15, /* coin droit haut */
+    0 calc(100% - 8px) 0 #facc15, /* coin gauche bas */
+    calc(100% - 8px) calc(100% - 8px) 0 #facc15; /* coin droit bas */
+  opacity:.18; border-radius:2px;
+}
+.nb-card::after{ /* halo fin */
+  inset:0; width:auto;height:auto;background:none; box-shadow:inset 0 0 0 1px rgba(250,204,21,.15);
+}
+
+/* liste d’éléments (notes/playlists) */
+.nb-item{
+  @apply relative bg-neutral-950 border border-yellow-800/40 rounded-2xl px-3 py-3
+         flex justify-between gap-3;
+  box-shadow:
+    inset -3px -3px 0 rgba(0,0,0,.55),
+    inset  3px  3px 0 rgba(255,255,255,.035);
+}
+.nb-note-title{
+  font-family: 'Press Start 2P', ui-monospace, monospace;
+  @apply text-[11px] text-yellow-300 tracking-wide mb-1;
+}
+
+/* têtes de section plus “cute” */
+.nb-title-sm{
+  font-family: 'Press Start 2P', ui-monospace, monospace;
+  @apply text-[11px] leading-none text-yellow-300 tracking-[.15em];
+  text-shadow: 0 0 14px rgba(250,204,21,.18);
+}
+.nb-section-head{ @apply mb-2 flex items-center justify-between; }
+.nb-section-head::before{
+  content:"◆";
+  @apply mr-2 text-yellow-400;
+  opacity:.8; font-size:10px;
+}
+
+/* ——— FORM INPUTS ——— */
+.nb-input{
+  @apply w-full bg-neutral-950 text-yellow-50 placeholder-yellow-200/50
+         border-2 border-yellow-800 rounded-2xl px-3 py-3;
+  box-shadow:
+    inset -3px -3px 0 rgba(0,0,0,.6),
+    inset  3px  3px 0 rgba(255,255,255,.04),
+    0 0 0 2px rgba(234,179,8,.05);
+}
+.nb-input-sm{ @apply py-2; }
+
+.nb-textarea{
+  @apply w-full min-h-[160px] bg-neutral-950 text-yellow-50 placeholder-yellow-200/50
+         border-2 border-yellow-800 rounded-2xl px-3 py-3;
+  box-shadow:
+    inset -3px -3px 0 rgba(0,0,0,.6),
+    inset  3px  3px 0 rgba(255,255,255,.04),
+    0 0 0 2px rgba(234,179,8,.05);
+}
+
+.nb-select{
+  @apply bg-neutral-950 text-yellow-50 border-2 border-yellow-800 rounded-2xl px-3 py-2;
+  box-shadow:
+    inset -3px -3px 0 rgba(0,0,0,.6),
+    inset  3px  3px 0 rgba(255,255,255,.04),
+    0 0 0 2px rgba(234,179,8,.05);
+}
+.nb-select-sm{ @apply py-1 text-[12px]; }
+
+/* ——— BUTTONS ——— */
+.nb-btn{
+  @apply inline-flex items-center justify-center rounded-2xl px-3 py-2
+         text-neutral-900 border border-yellow-900;
+  background-image: linear-gradient(#fde047, #f59e0b); /* y300 -> y500 */
+  box-shadow:
+    0 8px 0 rgba(47,38,0,.9),
+    0 0 0 2px rgba(234,179,8,.1),
+    0 14px 28px rgba(0,0,0,.35);
+  transition: transform .05s ease, box-shadow .05s ease, filter .12s ease;
+}
+.nb-btn:hover{ filter:brightness(1.06); }
+.nb-btn:active{ transform: translateY(2px); box-shadow: 0 4px 0 rgba(47,38,0,.9), 0 0 0 2px rgba(234,179,8,.1); }
+.nb-btn-xs{ @apply px-2 py-1 text-[12px] rounded-xl; }
+
+.nb-btn-primary{ background-image: linear-gradient(#fde047, #f59e0b); }
+.nb-btn-danger { 
+  @apply text-white border-rose-900;
+  background-image: linear-gradient(#fb7185, #e11d48);
+}
+.nb-btn-ghost{
+  @apply text-yellow-100 border-neutral-900;
+  background-image: linear-gradient(#3f3f46, #27272a);
+}
+.nb-btn-file{ @apply relative overflow-hidden; }
+.nb-btn-file input{ @apply absolute inset-0 opacity-0 cursor-pointer; }
+
+/* ——— QUIZ OVERLAY ——— */
+.nb-overlay{
+  @apply fixed inset-0 z-20 flex items-center justify-center p-4;
+  background: radial-gradient(600px 260px at 50% -10%, rgba(250,204,21,.12), transparent 60%),
+              rgba(0,0,0,.7);
+  backdrop-filter: blur(8px);
+}
+.nb-modal{
+  @apply w-full max-w-xl bg-neutral-950/90 border border-yellow-800/50 rounded-3xl p-5;
+  box-shadow: 0 22px 60px rgba(0,0,0,.6), inset 0 0 0 1px rgba(250,204,21,.12);
+}
+
+/* ——— SMALL TWEAKS FOR LAYOUT ——— */
+/* occupe mieux la hauteur sur desktop */
+@media (min-width: 960px){
+  .nb-wrap.grid{ min-height: 420px; }
+}
+.nb-menu{
+  position:absolute; top:110%; left:0;
+  background:#0b0b0b; border:1px solid rgba(255,196,0,.35);
+  border-radius:12px; min-width: 160px; padding:4px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45); z-index:30;
+}
+.nb-menu-item{
+  display:block; width:100%;
+  text-align:left; padding:.45rem .65rem;
+  color:#f9f3c7; border-radius:10px;
+}
+.nb-menu-item:hover{ background:rgba(255,200,0,.08); }
