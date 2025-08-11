@@ -319,50 +319,55 @@ export default function Notebook() {
   return (
     <div className="nb">
       {/* HEADER */}
-      <header className="nb-bar">
-        <div className="flex items-center gap-2">
-          <Link className="nb-btn nb-btn-ghost nb-btn-xs" to="/dashboard">
-            {t('notebook.navHome')}
-          </Link>
-          <Link className="nb-btn nb-btn-ghost nb-btn-xs" to="/basic">
-            {t('notebook.navBasic')}
-          </Link>
-        </div>
+      <header className="nb-bar flex flex-wrap items-center gap-2 md:gap-3">
+  {/* Left: nav */}
+  <div className="flex items-center gap-2 order-1 w-auto">
+    <Link className="nb-btn nb-btn-ghost nb-btn-xs" to="/dashboard">
+      {t('notebook.navHome')}
+    </Link>
+    <Link className="nb-btn nb-btn-ghost nb-btn-xs" to="/basic">
+      {t('notebook.navBasic')}
+    </Link>
+  </div>
 
-        <div className="flex items-center gap-3">
-          <div className="nb-logo">✦</div>
-          <h1 className="nb-title">{t('notebook.title')}</h1>
-        </div>
+  {/* Center: title — full width on mobile so it can center */}
+  <div className="flex items-center gap-2 order-2 w-full justify-center sm:order-2">
+    <div className="nb-logo">✦</div>
+    <h1 className="nb-title">{t('notebook.title')}</h1>
+  </div>
 
-        <div className="flex items-center gap-2">
-          <label className="sr-only">{t('notebook.studyLanguage')}</label>
-          <select
-            className="nb-select"
-            value={studyLang}
-            onChange={e => { setSelectedPl(''); setStudyLang(e.target.value) }}
-            title={t('notebook.studyLanguage')}
-          >
-            <option value="pt-BR">Português</option>
-            <option value="zh-CN">Mandarin</option>
-          </select>
+  {/* Right: controls — stack on mobile, row on >=sm */}
+  <div className="flex items-center gap-2 order-3 w-full sm:w-auto sm:ml-auto justify-end">
+    <label className="sr-only">{t('notebook.studyLanguage')}</label>
+    <select
+      className="nb-select w-full sm:w-auto"
+      value={studyLang}
+      onChange={e => { setSelectedPl(''); setStudyLang(e.target.value) }}
+      title={t('notebook.studyLanguage')}
+    >
+      <option value="pt-BR">Português</option>
+      <option value="zh-CN">Mandarin</option>
+    </select>
 
-          <label className="sr-only">{t('notebook.filterPlaylist')}</label>
-          <select
-            className="nb-select"
-            value={selectedPl}
-            onChange={onChangePlaylistFilter}
-            title={t('notebook.filterPlaylist')}
-          >
-            <option value="">{t('notebook.allNotes')}</option>
-            {playlists.map(pl => (
-              <option key={pl.id} value={pl.id}>{pl.name}</option>
-            ))}
-          </select>
-        </div>
-      </header>
+    <label className="sr-only">{t('notebook.filterPlaylist')}</label>
+    <select
+      className="nb-select w-full sm:w-auto"
+      value={selectedPl}
+      onChange={onChangePlaylistFilter}
+      title={t('notebook.filterPlaylist')}
+    >
+      <option value="">{t('notebook.allNotes')}</option>
+      {playlists.map(pl => (
+        <option key={pl.id} value={pl.id}>{pl.name}</option>
+      ))}
+    </select>
+  </div>
+</header>
+
 
       {/* GRID */}
-      <div className="nb-wrap grid lg:grid-cols-[1.1fr_0.9fr] gap-4 pb-8">
+      <div className="nb-wrap grid gap-4 pb-8 lg:grid-cols-[1.1fr_0.9fr] max-w-full">
+
         {/* MES NOTES */}
         <section className="nb-card">
           <div className="nb-section-head">

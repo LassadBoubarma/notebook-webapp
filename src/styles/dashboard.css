@@ -112,3 +112,62 @@
 }
 .db-lang-select-sm{ padding:.35rem .6rem; font-size:.9rem; border-radius:12px; }
 .db-lang-select:focus{ border-color:#ffdd66; box-shadow: 0 0 0 3px rgba(255,221,102,.2); }
+/* Top bar – responsive like notebook */
+.dash-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, rgba(10,10,10,0.96), rgba(10,10,10,0.94));
+  border-bottom: 1px solid rgba(255, 200, 60, 0.12);
+  flex-wrap: wrap; /* allow wrap on small screens */
+}
+
+.dash-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.dash-logo {
+  color: #ffe98a;
+  font-size: 18px;
+}
+
+.dash-title {
+  color: #fff5cc;
+  font-family: 'Press Start 2P', ui-monospace, monospace;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.dash-right {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/* Horizontal scroller so buttons never wrap badly on mobile */
+.dash-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.dash-controls::-webkit-scrollbar { display: none; }
+
+.dash-lang { flex: 0 0 auto; }
+
+@media (max-width: 768px) {
+  .dash-title { font-size: 16px; }
+  .dash-right { flex: 1 1 100%; }
+  .dash-controls { justify-content: flex-end; }
+}

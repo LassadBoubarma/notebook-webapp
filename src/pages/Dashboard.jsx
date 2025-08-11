@@ -52,26 +52,28 @@ export default function Dashboard() {
   return (
     <div className="dash">
       {/* Barre du haut */}
-      <header className="dash-header">
-        <div className="dash-header-left">
-          <span className="dash-logo">✦</span>
-          <h1 className="dash-title">{t('dashboard.title')}</h1>
-        </div>
+      {/* ——— HEADER ——— */}
+<header className="dash-bar">
+  {/* LEFT: title */}
+  <div className="dash-left">
+    <span className="dash-logo">✦</span>
+    <h1 className="dash-title">{t('dashboard.title')}</h1>
+  </div>
 
-        <nav className="dash-nav">
-          <SiteLanguageSwitcher size="sm" />
-          <Link className="btn btn-ghost" to="/notebook">
-            📝 {t('dashboard.btn.notebook')}
-          </Link>
-          <Link className="btn btn-ghost" to="/basic">
-            🧸 {t('dashboard.btn.basic')}
-          </Link>
-        </nav>
+  {/* RIGHT: controls (language + links + logout) */}
+  <div className="dash-right">
+    <div className="dash-controls">
+      <div className="dash-lang">
+        <SiteLanguageSwitcher size="sm" />
+      </div>
 
-        <button className="btn btn-pink" onClick={logout}>
-          🚪 {t('dashboard.btn.logout')}
-        </button>
-      </header>
+      
+
+      <button className="btn btn-pink" onClick={logout}>🚪 {t('dashboard.btn.logout')}</button>
+    </div>
+  </div>
+</header>
+
 
       <main className="dash-main">
         {/* Bandeau kawaii */}
@@ -82,14 +84,7 @@ export default function Dashboard() {
               {t('dashboard.welcome')} {username}
             </h2>
           </div>
-          <div className="hero-actions">
-            <Link to="/notebook" className="btn btn-primary">
-              ⭐ {t('dashboard.btn.notebook')}
-            </Link>
-            <Link to="/basic" className="btn btn-yellow">
-              🎨 {t('dashboard.btn.basic')}
-            </Link>
-          </div>
+          
         </Card>
 
         {/* Statistiques */}
