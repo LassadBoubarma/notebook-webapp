@@ -11,11 +11,7 @@ import {
 
 const STUDY_LANG_KEY = 'study.language'
 
-/** Affiche le contenu d’une note :
- *  - ligne normale => texte
- *  - @audio(url)   => lecteur audio
- *  - @video(url)   => lecteur vidéo
- */
+/* ---------- Note body (text / @audio(url) / @video(url)) ---------- */
 function NoteBody({ content }) {
   const blocks = useMemo(() => {
     return (content || '').split(/\n+/).map((line, i) => {
@@ -46,7 +42,7 @@ function NoteBody({ content }) {
   )
 }
 
-/** Modal Quiz — simple carte avec navigation */
+/* ---------- Quiz overlay ---------- */
 function QuizOverlay({ items, onClose }) {
   const [i, setI] = useState(0)
   const [show, setShow] = useState(false)
@@ -103,7 +99,7 @@ function QuizOverlay({ items, onClose }) {
   )
 }
 
-/** Sélecteur de playlists (toggle + ✓) */
+/* ---------- Playlist picker (toggle + ✓) ---------- */
 function NotePlaylistPicker({ noteId, playlists, memberships, onToggle, labelAdd }) {
   const [open, setOpen] = useState(false)
   const member = memberships.get(noteId) || new Set()
@@ -136,19 +132,20 @@ function NotePlaylistPicker({ noteId, playlists, memberships, onToggle, labelAdd
   )
 }
 
+/* ===================== MAIN ===================== */
 export default function Notebook() {
   const { t } = useLanguage()
 
-  // Langue d’étude (persistée localStorage)
+  // Study language (persisted)
   const [studyLang, setStudyLang] = useState(() => localStorage.getItem(STUDY_LANG_KEY) || 'pt-BR')
 
-  // Données
+  // Data
   const [notes, setNotes] = useState([])
   const [displayNotes, setDisplayNotes] = useState([])
   const [playlists, setPlaylists] = useState([])
   const [links, setLinks] = useState(new Map()) // noteId -> Set(playlistId)
 
-  // Création
+  // Create
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
@@ -159,7 +156,7 @@ export default function Notebook() {
   // Quiz
   const [quizItems, setQuizItems] = useState(null)
 
-  // Edition d’une note
+  // Edit
   const [editingId, setEditingId] = useState(null)
   const [editTitle, setEditTitle] = useState('')
   const [editContent, setEditContent] = useState('')
@@ -170,7 +167,6 @@ export default function Notebook() {
 
   useEffect(() => { refresh('') }, [studyLang])
 
-  /** Charge notes, playlists, appartenance, et applique le filtre courant */
   async function refresh(basePl = selectedPl) {
     const [n, p] = await Promise.all([listNotes(studyLang), listPlaylists(studyLang)])
     const allNotes = n.data || []
@@ -178,7 +174,7 @@ export default function Notebook() {
     setNotes(allNotes)
     setPlaylists(pls)
 
-    // appartenance note<->playlist pour la langue
+    // memberships
     const { data: lrows } = await listPlaylistMemberships(studyLang)
     const map = new Map()
     ;(lrows || []).forEach(r => {
@@ -195,10 +191,9 @@ export default function Notebook() {
     await applyFilter(basePl, allNotes)
   }
 
-  /** Filtrer par playlist */
   async function applyFilter(plId, all = notes) {
     if (!plId) { setDisplayNotes(all); return }
-    const { data } = await getPlaylistNotes(plId) // suppose retourne une liste de notes ou {id}
+    const { data } = await getPlaylistNotes(plId)
     const ids = new Set((data || []).map(n => n.id))
     setDisplayNotes((all || []).filter(n => ids.has(n.id)))
   }
@@ -209,7 +204,6 @@ export default function Notebook() {
     applyFilter(plId)
   }
 
-  /** Création d’une note */
   async function addNote() {
     if (!title.trim() || !content.trim()) return
     const { data: note } = await createNote({ title, content, lang: studyLang })
@@ -218,7 +212,7 @@ export default function Notebook() {
     await refresh(selectedPl || '')
   }
 
-  /** Uploads pour création */
+  // uploads (create)
   async function attachAudio(file) {
     const { signedUrl } = await uploadMedia(file, 'audio')
     setContent(prev => `${prev}\n@audio(${signedUrl})`)
@@ -232,7 +226,7 @@ export default function Notebook() {
     setContent(prev => `${prev}\n![img](${signedUrl})`)
   }
 
-  /** Edition */
+  // edit
   function beginEdit(note) {
     setEditingId(note.id)
     setEditTitle(note.title)
@@ -250,7 +244,7 @@ export default function Notebook() {
     await refresh(selectedPl || '')
   }
 
-  /** Uploads en mode édition */
+  // uploads (edit)
   async function attachAudioEdit(file) {
     const { signedUrl } = await uploadMedia(file, 'audio')
     setEditContent(prev => `${prev}\n@audio(${signedUrl})`)
@@ -264,12 +258,11 @@ export default function Notebook() {
     setEditContent(prev => `${prev}\n![img](${signedUrl})`)
   }
 
-  /** Toggle appartenance note<->playlist */
+  // membership toggle
   async function toggleMembership(plId, noteId, currentlyOn) {
     if (currentlyOn) await removeNoteFromPlaylist(plId, noteId)
     else await addNoteToPlaylist(plId, noteId)
 
-    // MAJ locale immédiate
     setLinks(prev => {
       const next = new Map(prev)
       const s = new Set(next.get(noteId) || [])
@@ -280,7 +273,7 @@ export default function Notebook() {
     })
   }
 
-  /** CRUD Playlists */
+  // playlists CRUD
   async function mkPlaylist() {
     if (!newPl.trim()) return
     const { data } = await createPlaylist({ name: newPl, lang: studyLang })
@@ -289,23 +282,20 @@ export default function Notebook() {
   }
   async function killPlaylist(id) { await deletePlaylist(id); await refresh('') }
 
-  /** Quiz */
+  // quiz
   async function startQuiz(playlist_id) {
     try {
       let items = []
       const { data, error } = await getPlaylistNotes(playlist_id)
 
       if (!error && Array.isArray(data) && data.length) {
-        // RPC peut déjà renvoyer title/content
         if (data[0]?.title && data[0]?.content) {
           items = data.map(r => ({ title: r.title, content: r.content }))
         } else {
-          // sinon, data = ids -> on recoupe avec notes chargées
           const idSet = new Set(data.map(x => x.id))
           items = notes.filter(n => idSet.has(n.id)).map(n => ({ title: n.title, content: n.content }))
         }
       } else {
-        // fallback : notes affichées
         items = displayNotes.map(n => ({ title: n.title, content: n.content }))
       }
 
@@ -320,56 +310,139 @@ export default function Notebook() {
     <div className="nb">
       {/* HEADER */}
       <header className="nb-bar flex flex-wrap items-center gap-2 md:gap-3">
-  {/* Left: nav */}
-  <div className="flex items-center gap-2 order-1 w-auto">
-    <Link className="nb-btn nb-btn-ghost nb-btn-xs" to="/dashboard">
-      {t('notebook.navHome')}
-    </Link>
-    <Link className="nb-btn nb-btn-ghost nb-btn-xs" to="/basic">
-      {t('notebook.navBasic')}
-    </Link>
-  </div>
+        {/* Left */}
+        <div className="flex items-center gap-2 order-1 w-auto">
+          <Link className="nb-btn nb-btn-ghost nb-btn-xs" to="/dashboard">
+            {t('notebook.navHome')}
+          </Link>
+          <Link className="nb-btn nb-btn-ghost nb-btn-xs" to="/basic">
+            {t('notebook.navBasic')}
+          </Link>
+        </div>
 
-  {/* Center: title — full width on mobile so it can center */}
-  <div className="flex items-center gap-2 order-2 w-full justify-center sm:order-2">
-    <div className="nb-logo">✦</div>
-    <h1 className="nb-title">{t('notebook.title')}</h1>
-  </div>
+        {/* Center */}
+        <div className="flex items-center gap-2 order-2 w-full justify-center sm:order-2">
+          <div className="nb-logo">✦</div>
+          <h1 className="nb-title">{t('notebook.title')}</h1>
+        </div>
 
-  {/* Right: controls — stack on mobile, row on >=sm */}
-  <div className="flex items-center gap-2 order-3 w-full sm:w-auto sm:ml-auto justify-end">
-    <label className="sr-only">{t('notebook.studyLanguage')}</label>
-    <select
-      className="nb-select w-full sm:w-auto"
-      value={studyLang}
-      onChange={e => { setSelectedPl(''); setStudyLang(e.target.value) }}
-      title={t('notebook.studyLanguage')}
-    >
-      <option value="pt-BR">Português</option>
-      <option value="zh-CN">Mandarin</option>
-    </select>
+        {/* Right */}
+        <div className="flex items-center gap-2 order-3 w-full sm:w-auto sm:ml-auto justify-end">
+          <label className="sr-only">{t('notebook.studyLanguage')}</label>
+          <select
+            className="nb-select w-full sm:w-auto"
+            value={studyLang}
+            onChange={e => { setSelectedPl(''); setStudyLang(e.target.value) }}
+            title={t('notebook.studyLanguage')}
+          >
+            <option value="pt-BR">Português</option>
+            <option value="zh-CN">Mandarin</option>
+          </select>
 
-    <label className="sr-only">{t('notebook.filterPlaylist')}</label>
-    <select
-      className="nb-select w-full sm:w-auto"
-      value={selectedPl}
-      onChange={onChangePlaylistFilter}
-      title={t('notebook.filterPlaylist')}
-    >
-      <option value="">{t('notebook.allNotes')}</option>
-      {playlists.map(pl => (
-        <option key={pl.id} value={pl.id}>{pl.name}</option>
-      ))}
-    </select>
-  </div>
-</header>
+          <label className="sr-only">{t('notebook.filterPlaylist')}</label>
+          <select
+            className="nb-select w-full sm:w-auto"
+            value={selectedPl}
+            onChange={onChangePlaylistFilter}
+            title={t('notebook.filterPlaylist')}
+          >
+            <option value="">{t('notebook.allNotes')}</option>
+            {playlists.map(pl => (
+              <option key={pl.id} value={pl.id}>{pl.name}</option>
+            ))}
+          </select>
+        </div>
+      </header>
 
-
-      {/* GRID */}
+      {/* GRID (Mobile: editor+playlists on top; Desktop: notes left, editor right) */}
       <div className="nb-wrap grid gap-4 pb-8 lg:grid-cols-[1.1fr_0.9fr] max-w-full">
 
-        {/* MES NOTES */}
-        <section className="nb-card">
+        {/* ===== EDITOR + PLAYLISTS (order-1 on mobile) ===== */}
+        <div className="grid gap-4 order-1 lg:order-2">
+          {/* Editor */}
+          <section className="nb-card space-y-3">
+            <h2 className="nb-title-sm">{t('notebook.addNote')}</h2>
+
+            <input
+              className="nb-input"
+              placeholder={t('notebook.noteTitle')}
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+            />
+            <textarea
+              className="nb-textarea"
+              placeholder={t('notebook.noteContent')}
+              value={content}
+              onChange={e => setContent(e.target.value)}
+            />
+
+            <div className="flex flex-wrap items-center gap-2">
+              <label className="nb-btn nb-btn-file nb-btn-xs">
+                + {t('notebook.voice')}
+                <input type="file" accept="audio/*"
+                  onChange={e => e.target.files[0] && attachAudio(e.target.files[0])} />
+              </label>
+              <label className="nb-btn nb-btn-file nb-btn-xs">
+                + {t('notebook.video')}
+                <input type="file" accept="video/*"
+                  onChange={e => e.target.files[0] && attachVideo(e.target.files[0])} />
+              </label>
+              <label className="nb-btn nb-btn-file nb-btn-xs">
+                + {t('notebook.image')}
+                <input type="file" accept="image/*"
+                  onChange={e => e.target.files[0] && attachImage(e.target.files[0])} />
+              </label>
+
+              <div className="grow" />
+              <button className="nb-btn nb-btn-primary" onClick={addNote}>
+                {t('notebook.add')}
+              </button>
+            </div>
+          </section>
+
+          {/* Playlists */}
+          <section className="nb-card">
+            <div className="nb-section-head">
+              <h2 className="nb-title-sm">{t('notebook.playlists')}</h2>
+            </div>
+
+            <div className="flex items-center gap-2 mb-3">
+              <input
+                className="nb-input nb-input-sm"
+                placeholder={t('notebook.newPlaylist')}
+                value={newPl}
+                onChange={e => setNewPl(e.target.value)}
+              />
+              <button className="nb-btn" onClick={mkPlaylist}>{t('notebook.create')}</button>
+            </div>
+
+            <ul className="space-y-3">
+              {playlists.map(pl => (
+                <li key={pl.id} className="nb-item">
+                  <div className="nb-note-title">{pl.name}</div>
+                  <div className="flex items-center gap-2">
+                    <button className="nb-btn nb-btn-xs" onClick={() => startQuiz(pl.id)}>
+                      {t('notebook.quiz')}
+                    </button>
+                    <button
+                      className={`nb-btn nb-btn-xs ${selectedPl === pl.id ? 'ring-2 ring-yellow-400/70' : ''}`}
+                      onClick={() => { setSelectedPl(pl.id); applyFilter(pl.id) }}
+                      title={t('notebook.default')}
+                    >
+                      {t('notebook.default')}
+                    </button>
+                    <button className="nb-btn nb-btn-danger nb-btn-xs" onClick={() => killPlaylist(pl.id)}>
+                      {t('notebook.delete')}
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+
+        {/* ===== NOTES (order-2 on mobile) ===== */}
+        <section className="nb-card order-2 lg:order-1">
           <div className="nb-section-head">
             <h2 className="nb-title-sm">
               {selectedPl ? t('notebook.myNotes') : `${t('notebook.myNotes')} — ${studyLang}`}
@@ -395,7 +468,6 @@ export default function Notebook() {
                       placeholder={t('notebook.noteContent')}
                     />
 
-                    {/* BARRE D’UPLOAD EN MODE EDIT */}
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       <label className="nb-btn nb-btn-file nb-btn-xs">
                         🎙️ {t('notebook.voice')}
@@ -469,88 +541,6 @@ export default function Notebook() {
             )}
           </ul>
         </section>
-
-        {/* EDITEUR + PLAYLISTS */}
-        <div className="grid gap-4">
-          <section className="nb-card space-y-3">
-            <h2 className="nb-title-sm">{t('notebook.addNote')}</h2>
-
-            <input
-              className="nb-input"
-              placeholder={t('notebook.noteTitle')}
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-            />
-            <textarea
-              className="nb-textarea"
-              placeholder={t('notebook.noteContent')}
-              value={content}
-              onChange={e => setContent(e.target.value)}
-            />
-
-            <div className="flex flex-wrap items-center gap-2">
-              <label className="nb-btn nb-btn-file nb-btn-xs">
-                + {t('notebook.voice')}
-                <input type="file" accept="audio/*"
-                  onChange={e => e.target.files[0] && attachAudio(e.target.files[0])} />
-              </label>
-              <label className="nb-btn nb-btn-file nb-btn-xs">
-                + {t('notebook.video')}
-                <input type="file" accept="video/*"
-                  onChange={e => e.target.files[0] && attachVideo(e.target.files[0])} />
-              </label>
-              <label className="nb-btn nb-btn-file nb-btn-xs">
-                + {t('notebook.image')}
-                <input type="file" accept="image/*"
-                  onChange={e => e.target.files[0] && attachImage(e.target.files[0])} />
-              </label>
-
-              <div className="grow" />
-              <button className="nb-btn nb-btn-primary" onClick={addNote}>
-                {t('notebook.add')}
-              </button>
-            </div>
-          </section>
-
-          <section className="nb-card">
-            <div className="nb-section-head">
-              <h2 className="nb-title-sm">{t('notebook.playlists')}</h2>
-            </div>
-
-            <div className="flex items-center gap-2 mb-3">
-              <input
-                className="nb-input nb-input-sm"
-                placeholder={t('notebook.newPlaylist')}
-                value={newPl}
-                onChange={e => setNewPl(e.target.value)}
-              />
-              <button className="nb-btn" onClick={mkPlaylist}>{t('notebook.create')}</button>
-            </div>
-
-            <ul className="space-y-3">
-              {playlists.map(pl => (
-                <li key={pl.id} className="nb-item">
-                  <div className="nb-note-title">{pl.name}</div>
-                  <div className="flex items-center gap-2">
-                    <button className="nb-btn nb-btn-xs" onClick={() => startQuiz(pl.id)}>
-                      {t('notebook.quiz')}
-                    </button>
-                    <button
-                      className={`nb-btn nb-btn-xs ${selectedPl === pl.id ? 'ring-2 ring-yellow-400/70' : ''}`}
-                      onClick={() => { setSelectedPl(pl.id); applyFilter(pl.id) }}
-                      title={t('notebook.default')}
-                    >
-                      {t('notebook.default')}
-                    </button>
-                    <button className="nb-btn nb-btn-danger nb-btn-xs" onClick={() => killPlaylist(pl.id)}>
-                      {t('notebook.delete')}
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
       </div>
 
       {quizItems && <QuizOverlay items={quizItems} onClose={() => setQuizItems(null)} />}

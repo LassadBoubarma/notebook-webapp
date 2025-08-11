@@ -180,31 +180,3 @@
   color:#f9f3c7; border-radius:10px;
 }
 .nb-menu-item:hover{ background:rgba(255,200,0,.08); }
-/* Safe defaults mobile */
-* { box-sizing: border-box; }
-
-html, body, #root {
-  height: 100%;
-  max-width: 100%;
-  overflow-x: hidden;  /* <- stop horizontal scroll */
-}
-
-/* Media should never overflow */
-img, video, canvas, audio {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Optionnel: supprime les marges "imprévues" */
-body { margin: 0; }
-/* Prevent horizontal scroll on mobile */
-.nb, .nb-bar { max-width: 100%; overflow-x: hidden; }
-
-/* Keep selects/buttons from overflowing */
-.nb-bar .nb-select { min-width: 0; }
-
-/* Optional: compact spacing on very small screens */
-@media (max-width: 420px) {
-  .nb-bar .nb-btn-ghost { padding-inline: 10px; }
-  .nb-title { font-size: clamp(18px, 5vw, 24px); }
-}
